@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudSpeed | Internet Speed Test</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="brand">⚡ CloudSpeed</div>
+      <span class="subtitle">Network Performance Analyzer</span>
+    </header>
+
+    <section class="hero">
+      <h1>Test your internet speed.</h1>
+      <p>Fast, adaptive, and data-efficient measurements.</p>
+      <button id="startBtn">START TEST</button>
+      <div id="status">Ready to test</div>
+    </section>
+
+    <section class="results">
+      <div class="metric">
+        <div class="metric-icon">◷</div>
+        <h3>Ping</h3>
+        <div class="value" id="ping">--</div>
+        <div class="unit">ms</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-icon">↓</div>
+        <h3>Download</h3>
+        <div class="value" id="download">--</div>
+        <div class="unit">Mbps</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-icon">↑</div>
+        <h3>Upload</h3>
+        <div class="value" id="upload">--</div>
+        <div class="unit">Mbps</div>
+      </div>
+    </section>
+
+    <section class="progress-section">
+      <div class="progress-label">
+        <span id="phase">Waiting to start</span>
+        <span id="percent">0%</span>
+      </div>
+      <div class="progress-track">
+        <div id="progressBar"></div>
+      </div>
+    </section>
+
+    <section class="details">
+      <h2>Test Statistics</h2>
+
+      <div class="detail-row">
+        <span>Downloaded Data</span>
+        <strong id="downloadData">0.00 MB</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>Uploaded Data</span>
+        <strong id="uploadData">0.00 MB</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>Total Test Duration</span>
+        <strong id="duration">0.00 s</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>Testing Algorithm</span>
+        <strong>Adaptive Payload Sizing</strong>
+      </div>
+    </section>
+
+    <footer>
+      CloudSpeed · Computer Networks Project
+    </footer>
+  </main>
+</body>
+</html>

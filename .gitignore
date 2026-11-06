@@ -1,0 +1,28 @@
+# Python virtual environments
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# AWS credentials
+*.pem
+*.key
+
+# Node.js
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# Editor
+.vscode/
+.idea/
