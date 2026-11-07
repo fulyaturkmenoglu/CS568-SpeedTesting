@@ -1,10 +1,10 @@
 :root {
-  --bg: #080d19;
-  --panel: #111a2d;
-  --border: #26324a;
+  --bg: #6ca65c;
+  --panel: #5d004d;   
+  --border: #0e5116;
   --text: #f1f5ff;
-  --muted: #94a3b8;
-  --accent: #38bdf8;
+  --muted: #5dff62;
+  --accent: #940080;
   --green: #34d399;
   --yellow: #facc15;
   --orange: #fb923c;
@@ -58,7 +58,7 @@ button {
   border: none;
   border-radius: 40px;
   padding: 17px 55px;
-  color: #07111f;
+  color: #3e6a1a;
   font-weight: 800;
   font-size: 15px;
   cursor: pointer;
@@ -66,7 +66,7 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background: #7dd3fc;
+  background: #0c570e;
   transform: translateY(-2px);
 }
 
@@ -132,7 +132,7 @@ button:disabled {
 
 .progress-track {
   height: 10px;
-  background: #26324a;
+  background: #0c570b;
   border-radius: 20px;
   overflow: hidden;
 }
@@ -140,7 +140,7 @@ button:disabled {
 #progressBar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  background: linear-gradient(90deg, #125b18, #6b125f);
   transition: width 0.2s;
 }
 
@@ -327,7 +327,7 @@ button:disabled {
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: rgba(56, 189, 248, 0.12);
+  background: rgb(21, 66, 13);
 }
 
 .btn-secondary.small {

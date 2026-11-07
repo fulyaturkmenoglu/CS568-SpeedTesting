@@ -64,14 +64,7 @@ async def ping():
 
 @app.websocket("/ws/ping")
 async def ws_ping(ws: WebSocket):
-    """
-    Echo endpoint for latency measurement.
 
-    A WebSocket round trip has far less per-request overhead than an HTTP
-    request (no headers, no new request/response cycle), so it is much closer
-    to the real network RTT and can be repeated cheaply while a download or
-    upload is running (loaded latency / bufferbloat).
-    """
     await ws.accept()
     try:
         while True:
@@ -137,7 +130,7 @@ async def upload(request: Request):
                 )
     except ClientDisconnect:
         # The browser aborts in-flight uploads when the measurement window
-        # ends. That is expected, not an error.
+        # ends.
         return Response(status_code=204)
 
     elapsed = time.perf_counter() - start
@@ -149,7 +142,6 @@ async def upload(request: Request):
         },
         headers=NO_CACHE_HEADERS,
     )
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"

@@ -6,9 +6,6 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const KiB = 1024;
 const MiB = 1024 * KiB;
 
-/* ------------------------------------------------------------------ *
- * Configuration
- * ------------------------------------------------------------------ */
 const CONFIG = {
   latency: {
     warmup: 2,          // probes discarded (connection setup, JIT, caches)
@@ -41,9 +38,6 @@ const CONFIG = {
   historyMax: 10
 };
 
-/* ------------------------------------------------------------------ *
- * Statistics helpers (the same metrics NetPulse reports per target)
- * ------------------------------------------------------------------ */
 function percentile(sorted, p) {
   if (!sorted.length) return NaN;
   const idx = (p / 100) * (sorted.length - 1);
@@ -66,9 +60,8 @@ function stddev(values) {
 
 /**
  * samples: round-trip times in ms, in the order they were taken.
- * sent: number of probes that were sent (replies that never arrived = loss).
+ * sent: number of probes that were sent.
  * Jitter is the mean absolute difference between consecutive samples
- * (the same idea as RFC 3550 interarrival jitter).
  */
 function latencyStats(samples, sent) {
   if (!samples.length) return null;
@@ -99,9 +92,6 @@ function latencyStats(samples, sent) {
   };
 }
 
-/* ------------------------------------------------------------------ *
- * Formatting / UI helpers
- * ------------------------------------------------------------------ */
 function formatMB(bytes) {
   return (bytes / 1_000_000).toFixed(2) + " MB";
 }
@@ -137,9 +127,6 @@ function updateData() {
   setText("uploadData", formatMB(uploadedBytes));
 }
 
-/* ------------------------------------------------------------------ *
- * Latency: WebSocket echo (falls back to HTTP)
- * ------------------------------------------------------------------ */
 class Pinger {
   constructor() {
     this.mode = "websocket";
@@ -298,17 +285,13 @@ function startLoadedProbe(pinger) {
   };
 }
 
-/* ------------------------------------------------------------------ *
- * Throughput measurement
- * ------------------------------------------------------------------ */
-
-/** Counts bytes and lets us ask "what was the rate between t1 and t2?". */
+/** Counts bytes*/
 class Meter {
   constructor() {
     this.t0 = performance.now();
     this.bytes = 0;
     this.points = [{ t: 0, b: 0 }];
-    this.acked = [];      // completed (server-acknowledged) uploads: { t, b }
+    this.acked = [];      // completed (server-acknowledged)
     this.ackedBytes = 0;
   }
 
@@ -406,7 +389,7 @@ function makePayload(size) {
 /**
  * Uploads use XMLHttpRequest because fetch() cannot report upload progress.
  * upload.onprogress tells us how many bytes have been handed to the network
- * stack; the ramp-up window is discarded so the initial socket-buffer burst
+ * stack, the ramp-up window is discarded so the initial socket-buffer burst
  * does not inflate the result.
  */
 function uploadWorker(cfg, meter, signal, payload, errors) {
@@ -451,7 +434,6 @@ function uploadWorker(cfg, meter, signal, payload, errors) {
   });
 }
 
-/* Live chart ------------------------------------------------------- */
 const chart = { points: [], offset: 0 };
 
 function niceMax(v) {
@@ -548,7 +530,6 @@ function drawChart() {
   }
 }
 
-/* One throughput phase --------------------------------------------- */
 async function runThroughput(kind, pinger, progressBase, progressSpan) {
   const cfg = CONFIG[kind];
   const isDownload = kind === "download";
@@ -617,7 +598,7 @@ async function runThroughput(kind, pinger, progressBase, progressSpan) {
   const duration = meter.now();
 
   const stopProbe = probe.stop();   // stops scheduling new pings right away
-  ctrl.abort();                     // tears down the streams
+  ctrl.abort();
   const loaded = await stopProbe;
   await Promise.allSettled(workers);
 
@@ -631,14 +612,13 @@ async function runThroughput(kind, pinger, progressBase, progressSpan) {
   else uploadedBytes += tail;
   updateData();
 
-  // The first rampMs are TCP slow start: reported speed excludes them.
   const ramp = Math.min(cfg.rampMs, duration * 0.3);
   let steady = meter.rate(ramp, duration);
   let method = "streamed bytes";
 
   // Upload progress events count bytes sitting in socket/kernel buffers, which
   // inflates the rate. Bytes of requests the server has fully received cannot
-  // be inflated, so use those (first to last completion after ramp-up).
+  // be inflated, so use those.
   if (!isDownload) {
     const acks = meter.acked.filter((p) => p.t >= ramp);
     if (acks.length >= 3) {
@@ -680,9 +660,6 @@ async function runThroughput(kind, pinger, progressBase, progressSpan) {
   };
 }
 
-/* ------------------------------------------------------------------ *
- * Analysis (bufferbloat and quality)
- * ------------------------------------------------------------------ */
 function gradeFor(addedMs) {
   if (addedMs < 5) return "A+";
   if (addedMs < 30) return "A";
@@ -767,9 +744,6 @@ function renderQuality(items) {
   }
 }
 
-/* ------------------------------------------------------------------ *
- * History and export
- * ------------------------------------------------------------------ */
 let lastResult = null;
 
 function loadHistory() {
@@ -786,7 +760,7 @@ function saveHistory(entry) {
   const list = [entry, ...loadHistory()].slice(0, CONFIG.historyMax);
   try {
     localStorage.setItem(CONFIG.historyKey, JSON.stringify(list));
-  } catch { /* storage unavailable: history simply isn't kept */ }
+  } catch {}
   renderHistory();
 }
 
@@ -828,14 +802,11 @@ function exportJson() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-/* ------------------------------------------------------------------ *
- * Environment info
- * ------------------------------------------------------------------ */
 async function loadServerInfo() {
   try {
     const res = await fetch("/api/info", { cache: "no-store" });
     if (res.ok) return await res.json();
-  } catch { /* optional */ }
+  } catch {}
   return null;
 }
 
@@ -855,9 +826,6 @@ function pageProtocol() {
   return (nav && nav.nextHopProtocol) || "unknown";
 }
 
-/* ------------------------------------------------------------------ *
- * Test orchestration
- * ------------------------------------------------------------------ */
 function resetUi() {
   downloadedBytes = 0;
   uploadedBytes = 0;
