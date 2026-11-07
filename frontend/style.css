@@ -1,4 +1,3 @@
-
 :root {
   --bg: #080d19;
   --panel: #111a2d;
@@ -7,6 +6,9 @@
   --muted: #94a3b8;
   --accent: #38bdf8;
   --green: #34d399;
+  --yellow: #facc15;
+  --orange: #fb923c;
+  --red: #f87171;
 }
 
 * {
@@ -41,11 +43,6 @@ header {
   color: var(--accent);
 }
 
-.subtitle {
-  font-size: 13px;
-  color: var(--muted);
-}
-
 .hero {
   text-align: center;
   padding: 65px 0 45px;
@@ -53,12 +50,7 @@ header {
 
 .hero h1 {
   font-size: clamp(28px, 5vw, 46px);
-  margin: 0 0 12px;
-}
-
-.hero p {
-  color: var(--muted);
-  margin-bottom: 35px;
+  margin: 0 0 28px;
 }
 
 button {
@@ -183,6 +175,202 @@ button:disabled {
   text-align: right;
 }
 
+
+.metric .sub,
+.stat .sub {
+  color: var(--muted);
+  font-size: 12px;
+  min-height: 16px;
+  margin-top: 6px;
+}
+
+.results.secondary {
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 18px;
+}
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 14px;
+  text-align: center;
+}
+
+.stat h4 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.stat-value small {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.grade {
+  font-size: 30px;
+}
+
+.grade[data-grade="A+"], .grade[data-grade="A"] { color: var(--green); }
+.grade[data-grade="B"] { color: var(--yellow); }
+.grade[data-grade="C"] { color: var(--orange); }
+.grade[data-grade="D"], .grade[data-grade="F"] { color: var(--red); }
+
+.chart-card,
+.quality {
+  margin-top: 40px;
+  padding: 24px 28px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.chart-card h2,
+.quality h2,
+.chart-head h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.quality h2 {
+  margin-bottom: 16px;
+}
+
+.legend {
+  color: var(--muted);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+.dot.dl { background: var(--accent); }
+.dot.ul { background: var(--green); }
+
+#chart {
+  display: block;
+  width: 100%;
+  height: 220px;
+}
+
+.chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  min-height: 20px;
+}
+
+.chips:empty::before {
+  content: "Results appear when the test finishes.";
+  color: var(--muted);
+  font-size: 14px;
+  grid-column: 1 / -1;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chip span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.chip[data-level="good"] { border-left-color: var(--green); }
+.chip[data-level="fair"] { border-left-color: var(--yellow); }
+.chip[data-level="poor"] { border-left-color: var(--red); }
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 12px 28px;
+  font-size: 14px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.btn-secondary.small {
+  padding: 7px 16px;
+  font-size: 12px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+#historySection {
+  margin-top: 24px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.history {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.history th,
+.history td {
+  text-align: left;
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.history th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.history tr:last-child td {
+  border-bottom: none;
+}
+
 footer {
   text-align: center;
   color: var(--muted);
@@ -198,6 +386,19 @@ footer {
 
   .results {
     grid-template-columns: 1fr;
+  }
+
+  .results.secondary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chips {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card,
+  .quality {
+    padding: 20px 16px;
   }
 
   .hero {

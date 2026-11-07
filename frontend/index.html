@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,40 +10,67 @@
 <body>
   <main class="container">
     <header>
-      <div class="brand">
-        <h1>Speed Testing</h1>
-      </div>
+      <div class="brand">SpeedTesting</div>
     </header>
-
+ 
     <section class="hero">
       <h1>Test your internet speed.</h1>
       <button id="startBtn">START TESTING</button>
-      <div id="status">Ready to test</div>
+      <div id="status"></div>
     </section>
-
+ 
     <section class="results">
       <div class="metric">
         <div class="metric-icon">◷</div>
         <h3>Ping</h3>
         <div class="value" id="ping">--</div>
         <div class="unit">ms</div>
+        <div class="sub" id="pingSub"></div>
       </div>
-
+ 
       <div class="metric">
         <div class="metric-icon">↓</div>
         <h3>Download</h3>
         <div class="value" id="download">--</div>
         <div class="unit">Mbps</div>
+        <div class="sub" id="downloadSub"></div>
       </div>
-
+ 
       <div class="metric">
         <div class="metric-icon">↑</div>
         <h3>Upload</h3>
         <div class="value" id="upload">--</div>
         <div class="unit">Mbps</div>
+        <div class="sub" id="uploadSub"></div>
       </div>
     </section>
-
+ 
+    <section class="results secondary">
+      <div class="stat">
+        <h4>Jitter</h4>
+        <div class="stat-value"><span id="jitter">--</span> <small>ms</small></div>
+      </div>
+ 
+      <div class="stat">
+        <h4>Packet loss</h4>
+        <div class="stat-value" id="loss">--</div>
+      </div>
+ 
+      <div class="stat">
+        <h4>Ping under load</h4>
+        <div class="stat-value">
+          <span id="loadedDown">--</span> <small>down</small><br>
+          <span id="loadedUp">--</span> <small>up</small>
+        </div>
+      </div>
+ 
+      <div class="stat">
+        <h4>Bufferbloat</h4>
+        <div class="stat-value grade" id="bloat" data-grade="">--</div>
+        <div class="sub" id="bloatNote"></div>
+      </div>
+    </section>
+ 
     <section class="progress-section">
       <div class="progress-label">
         <span id="phase">Waiting to start</span>
@@ -54,31 +80,91 @@
         <div id="progressBar"></div>
       </div>
     </section>
-
+ 
+    <section class="chart-card">
+      <div class="chart-head">
+        <h2>Throughput over time</h2>
+        <div class="legend">
+          <span class="dot dl"></span> Download
+          <span class="dot ul"></span> Upload
+        </div>
+      </div>
+      <canvas id="chart" aria-label="Live throughput chart" role="img"></canvas>
+    </section>
+ 
+    <section class="quality">
+      <h2>What your connection can handle</h2>
+      <div id="quality" class="chips"></div>
+    </section>
+ 
     <section class="details">
       <h2>Test Statistics</h2>
-
+ 
       <div class="detail-row">
         <span>Downloaded Data</span>
         <strong id="downloadData">0.00 MB</strong>
       </div>
-
+ 
       <div class="detail-row">
         <span>Uploaded Data</span>
         <strong id="uploadData">0.00 MB</strong>
       </div>
-
+ 
       <div class="detail-row">
         <span>Total Test Duration</span>
         <strong id="duration">0.00 s</strong>
       </div>
-
+ 
+      <div class="detail-row">
+        <span>Parallel Streams</span>
+        <strong id="infoStreams">--</strong>
+      </div>
+ 
+      <div class="detail-row">
+        <span>Latency Method</span>
+        <strong id="infoMethod">--</strong>
+      </div>
+ 
+      <div class="detail-row">
+        <span>Page Protocol</span>
+        <strong id="infoProtocol">--</strong>
+      </div>
+ 
+      <div class="detail-row">
+        <span>Browser Connection Hint</span>
+        <strong id="infoHint">--</strong>
+      </div>
+ 
+      <div class="detail-row">
+        <span>Your IP (as seen by server)</span>
+        <strong id="infoIp">--</strong>
+      </div>
+ 
       <div class="detail-row">
         <span>Testing Algorithm</span>
-        <strong>Adaptive Payload Sizing</strong>
+        <strong>Parallel Streams · Ramp-up Discard · Stability Stop</strong>
       </div>
     </section>
-
+ 
+    <div class="actions">
+      <button id="exportBtn" class="btn-secondary" hidden>Download results (JSON)</button>
+    </div>
+ 
+    <section class="details" id="historySection" hidden>
+      <div class="chart-head">
+        <h2>Recent tests</h2>
+        <button id="clearHistoryBtn" class="btn-secondary small">Clear</button>
+      </div>
+      <div class="table-wrap">
+        <table class="history">
+          <thead>
+            <tr><th>When</th><th>Ping</th><th>Download</th><th>Upload</th><th>Bufferbloat</th></tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </section>
+ 
     <footer>
       CloudSpeed · Computer Networks Project
     </footer>
